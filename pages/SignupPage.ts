@@ -1,4 +1,4 @@
-import { Page, Locator } from "@playwright/test";
+import { Page, Locator, expect } from "@playwright/test";
 import { BasePages } from "./BasePages";
 
 export class SignupPage extends BasePages {
@@ -24,6 +24,9 @@ export class SignupPage extends BasePages {
   readonly reviewBtn: Locator;
   readonly confirmBtn: Locator;
   readonly okBtn: Locator;
+
+  // ✅ New: Confirmation message locator
+  readonly confirmationMessage: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -60,9 +63,12 @@ export class SignupPage extends BasePages {
     this.reviewBtn = page.getByRole('button', { name: 'Review Data' });
     this.confirmBtn = page.getByRole('button', { name: 'Confirm & Submit' });
     this.okBtn = page.getByRole('button', { name: 'OK' });
+
+    // ✅ Confirmation message (text ko real app ke hisaab se adjust karein)
+    this.confirmationMessage = page.getByText('Thank You!');
   }
 
-  // Actions
+  // Fill Company Info
   async fillCompanyInfo(
     companyName: string,
     companyCr: string,
@@ -83,6 +89,7 @@ export class SignupPage extends BasePages {
     await this.companyPhoneInput.fill(phone);
   }
 
+  // Fill Plant Info
   async fillPlantInfo(
     plantName: string,
     plantCr: string,
@@ -103,10 +110,16 @@ export class SignupPage extends BasePages {
     await this.plantPhoneInput.fill(phone);
   }
 
+  // Submit form only
   async submitForm() {
     await this.reviewBtn.click();
-    await this.page.pause();
     await this.confirmBtn.click();
+  }
+
+  // Assert signup success
+  async assertSignupSuccess() {
+    await expect(this.confirmationMessage).toBeVisible({ timeout: 100000 });
+    await this.page.waitForTimeout(2000);
     await this.okBtn.click();
   }
 }

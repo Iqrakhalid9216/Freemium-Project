@@ -1,13 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { SignupPage } from '../../pages/SignupPage';
 import { faker } from '@faker-js/faker';
 
-
 let signupPage: SignupPage;
-test.describe('Signup Page Tests', () => {
-  
 
-  // Faker variables
+test.describe('Signup Page Tests', () => {
   let companyFirstName: string;
   let companyLastName: string;
   let companyEmail: string;
@@ -19,61 +16,43 @@ test.describe('Signup Page Tests', () => {
   let plantPhone: string;
 
   test.beforeEach(async ({ page }) => {
-   
-
-    // Initialize faker variables fresh before each test
     companyFirstName = faker.person.firstName();
     companyLastName = faker.person.lastName();
-    companyEmail = faker.internet.email();
+    companyEmail = faker.internet.email({ provider: 'yopmail.com' });
 
-    // ✅ Pakistan mobile number (valid 11-digit format: 03XXXXXXXXX)
-    companyPhone = faker.helpers.replaceSymbols('03244566321');
+
+    //  Valid Pakistan number
+    companyPhone = '3214567890';
 
     plantFirstName = faker.person.firstName();
     plantLastName = faker.person.lastName();
-    plantEmail = faker.internet.email();
+    plantEmail = faker.internet.email({ provider: 'yopmail.com' });
 
-    // ✅ US mobile number (valid format: +1XXXXXXXXXX)
-    plantPhone = faker.helpers.replaceSymbols('+966112345678');
 
-    // Navigate and setup page object
+    // ✅ Valid US number
+    plantPhone = '2015550123';
+
     await page.goto('/signup');
     signupPage = new SignupPage(page);
   });
 
-  test('User can sign up successfully', async ({ page }) => {
-    
-
+  test('User can sign up successfully', async () => {
     // Fill Company Info
-    await signupPage.fillCompanyInfo(
-      companyFirstName,          // Company Name
-      faker.string.numeric(6),   // CR Number
-      companyFirstName,
-      companyLastName,
-      companyEmail,
-      companyPhone
+    await signupPage.fillCompanyInfo(companyFirstName,faker.string.numeric(6),companyFirstName,companyLastName,companyEmail,companyPhone
     );
 
     // Fill Plant Info
-    await signupPage.fillPlantInfo(
-      plantFirstName,                 // Plant Name
-      faker.string.numeric(7),   // CR Number
-      plantFirstName,
-      plantLastName,
-      plantEmail,
-      plantPhone
+    await signupPage.fillPlantInfo(plantFirstName,faker.string.numeric(7),plantFirstName,plantLastName,plantEmail,plantPhone
     );
-
-
-     // ✅ Verify successful signup
-    await page.pause(); 
-
-
 
     // Submit form
     await signupPage.submitForm();
-    await expect(page).toHaveURL(/.*signup-successfully/);
 
-   
+    
+
+    // Assert success popup
+    await signupPage.assertSignupSuccess();
+
+    
   });
 });
