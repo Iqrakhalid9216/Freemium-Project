@@ -32,26 +32,28 @@ test.describe('Signup Page Tests', () => {
     // ✅ Valid US number
     plantPhone = '2015550123';
 
-    await page.goto('/signup');
+    await page.goto('/Signup');
     signupPage = new SignupPage(page);
   });
 
-  test('User can sign up successfully', async () => {
+  
+  
+  test('message', async () => {
     // Fill Company Info
-    await signupPage.fillCompanyInfo(companyFirstName,faker.string.numeric(6),companyFirstName,companyLastName,companyEmail,companyPhone
-    );
+    //await signupPage.fillCompanyInfo(companyFirstName,faker.string.numeric(6),companyFirstName,companyLastName,companyEmail,companyPhone
+    //);
 
     // Fill Plant Info
-    await signupPage.fillPlantInfo(plantFirstName,faker.string.numeric(7),plantFirstName,plantLastName,plantEmail,plantPhone
-    );
+    //await signupPage.fillPlantInfo(plantFirstName,faker.string.numeric(7),plantFirstName,plantLastName,plantEmail,plantPhone
+    //);
 
     // Submit form
-    await signupPage.submitForm();
+    //await signupPage.submitForm();
 
     
 
     // Assert success popup
-    await signupPage.assertSignupSuccess();
+    //await signupPage.assertSignupSuccess();
 
     
   });

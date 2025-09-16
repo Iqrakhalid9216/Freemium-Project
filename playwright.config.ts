@@ -12,6 +12,9 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({ 
+
+  //globalSetup:require.resolve('./auth/global-setup'),
+
   timeout: 90*10000,
   testDir: './tests',
   /* Run tests in files in parallel */
@@ -29,6 +32,7 @@ export default defineConfig({
      /*Base URL to use in actions like `await page.goto('/Signup')`. */
     baseURL: 'https://mes-lite.o3ozone.ai/',
     headless: false,
+    storageState: "auth.json",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
