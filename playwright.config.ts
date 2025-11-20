@@ -45,7 +45,7 @@ export default defineConfig({
     // headless: false,
 
     screenshot: 'only-on-failure',  // Capture screenshot on failure
-    video: 'retain-on-failure',     // Record video for failed tests
+    // video: 'retain-on-failure',     // Record video for failed tests
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
